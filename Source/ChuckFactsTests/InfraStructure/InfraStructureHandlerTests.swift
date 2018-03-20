@@ -25,6 +25,19 @@ final class InfraStructureHandlerTests: XCTestCase {
 		return response
 	}
 	
+	private func verify(_ response: HTTPURLResponse, equalTo expectedError: BadRequestError) {
+		expect {
+			try self.handler.verifySuccessStatusCode(response)
+			}.to(throwError { (error: ServiceError) in
+				if case let .badRequest(error) = error {
+					expect(error).to(equal(expectedError))
+				}
+				else {
+					fail("Esperava-se ser um BadRequest error.")
+				}
+			})
+	}
+	
 	override func setUp() {
 		super.setUp()
 		
@@ -37,52 +50,25 @@ final class InfraStructureHandlerTests: XCTestCase {
 		super.tearDown()
 	}
 	
-	func test_shouldThrow_InvalidTermError_When_StatusCodeIs_422() {
+	func test_ShouldThrow_NoResultsError_When_StatusCodeIs_422() {
 		
 		let response = getResponseFor(status: 422)
 		
-		expect {
-			try self.handler.verifySuccessStatusCode(response)
-			}.to(throwError { (error: ServiceError) in
-				if case let .badRequest(error) = error {
-					expect(error).to(equal(BadRequestError.noResults))
-				}
-				else {
-					fail("Esperava-se ser um BadRequest error.")
-				}
-			})
+		verify(response, equalTo: .noResults)
 	}
 	
-	func test_shouldThrow_NotFoundError_When_StatusCodeIs_404() {
+	func test_ShouldThrow_InvalidTermError_When_StatusCodeIs_404() {
 		
 		let response = getResponseFor(status: 404)
 		
-		expect {
-			try self.handler.verifySuccessStatusCode(response)
-			}.to(throwError { (error: ServiceError) in
-				if case let .badRequest(error) = error {
-					expect(error).to(equal(BadRequestError.invalidTerm))
-				}
-				else {
-					fail("Esperava-se ser um BadRequest error.")
-				}
-			})
+		verify(response, equalTo: .invalidTerm)
 	}
 	
 	func test_shouldThrow_GenericError_When_StatusCodeIs_NotHandled() {
 		
 		let response = getResponseFor(status: 400)
 		
-		expect {
-			try self.handler.verifySuccessStatusCode(response)
-			}.to(throwError { (error: ServiceError) in
-				if case let .badRequest(error) = error {
-					expect(error).to(equal(BadRequestError.other))
-				}
-				else {
-					fail("Esperava-se ser um BadRequest error.")
-				}
-			})
+		verify(response, equalTo: .other)
 	}
 	
 	func test_shouldThrow_InternalServerError_When_StatusCodeIs_500() {
@@ -96,7 +82,7 @@ final class InfraStructureHandlerTests: XCTestCase {
 			})
 	}
 	
-	func test_shouldNotThrow_Error_When_ReceiveSuccessulStatusCode() {
+	func test_shouldNotThrowError_When_ReceiveSuccessulStatusCode() {
 		
 		let response = getResponseFor(status: 200)
 		

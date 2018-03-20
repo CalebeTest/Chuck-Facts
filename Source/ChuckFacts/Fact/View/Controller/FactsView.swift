@@ -16,11 +16,19 @@ final class FactsView: UIView {
 	
 	@IBOutlet private var textField: UITextField!
 	@IBOutlet private var tableView: UITableView!
-	@IBOutlet private var imageView: UIImageView!
 	
 	private let dataSource = FactsDataSource()
 	private let delegate = FactsDelegate()
 	private let disposeBag = DisposeBag()
+	
+	private var internalError: InternalErrorView?
+	private var connectionError: ConnectionErrorView?
+	private var emptyResult: FactEmptyResultView?
+	private var invalidTerm: FactInvalidTermView?
+	
+	private lazy var loadingView: ChuckLoading = {
+		return ChuckLoading()
+	}()
 	
 	weak var viewModel: FactViewModel?
 }
@@ -32,9 +40,12 @@ extension FactsView {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
+		tableView.accessibilityIdentifier = "FactTableView"
+		
+		loadingView.setConstraints(to: self)
 		setKeyboardButtonSubscription()
-		setupImageAnimation()
 		setupTableView()
+		openKeyboard()
 	}
 }
 
@@ -45,8 +56,7 @@ extension FactsView {
 	private func setKeyboardButtonSubscription() {
 		textField.rx.controlEvent(.editingDidEndOnExit)
 			.subscribe(onNext: { [weak self] in
-				let term = self?.textField.text ?? ""
-				self?.setScreenState(for: term)
+				self?.searchTerm()
 			})
 			.disposed(by: disposeBag)
 	}
@@ -68,22 +78,6 @@ extension FactsView {
 		tableView.dataSource = dataSource
 		tableView.delegate = delegate
 	}
-	
-	private func setupImageAnimation() {
-		let images = getAnimatedImages()
-		imageView.animationImages = images
-		imageView.animationDuration = 2
-	}
-	
-	private func getAnimatedImages() -> [UIImage] {
-		var images: [UIImage] = []
-		for index in 1 ... 22 {
-			if let image = UIImage(named: "chuck-\(index)") {
-				images.append(image)
-			}
-		}
-		return images
-	}
 }
 
 // MARK: - Render Methods -
@@ -93,29 +87,46 @@ extension FactsView {
 	private func render(_ state: FactScreenState) {
 		switch state {
 		case let .loading(color):
-			showLoading(with: color)
+			showLoadingHidingPartialView(color)
 		case let .success(facts):
 			prepareUIForSuccessResult()
 			reloadData(with: facts)
 		case .successWithEmptyResult:
-			break
+			showEmptyResultView()
 		case let .failure(error):
-			break
+			showFailure(for: error)
 		}
+	}
+	
+	private func showFailure(for error: FactScreenErrorType) {
+		switch error {
+		case .connection:
+			showConnectionError()
+		case .internal:
+			showInternalError()
+		case .invalidTerm:
+			showInvalidTermError()
+		case .noResults:
+			showEmptyResultView()
+		}
+	}
+	
+	private func searchTerm() {
+		guard let term = textField.text else { return }
+		setScreenState(for: term)
 	}
 	
 	private func showLoading(with color: UIColor) {
 		setTextFieldInteration(to: false)
 		setTextFieldBackground(to: color)
-		showLoading()
+		loadingView.showLoading()
 	}
 	
 	private func prepareUIForSuccessResult() {
 		setTableViewAlpha(to: 1)
-		hideLoading()
+		loadingView.hideLoading()
 		setTextFieldAlpha(to: 0)
-		setTextFieldBackground(to: .white)
-		setTextFieldInteration(to: true)
+		resetTextFieldUI()
 	}
 	
 	private func setTextFieldInteration(to state: Bool) {
@@ -125,18 +136,6 @@ extension FactsView {
 	private func setTextFieldBackground(to color: UIColor) {
 		UIView.animate(withDuration: 0.25) {
 			self.textField.backgroundColor = color
-		}
-	}
-	
-	private func showLoading() {
-		DispatchQueue.main.async {
-			self.imageView.startAnimating()
-		}
-	}
-	
-	private func hideLoading() {
-		DispatchQueue.main.async {
-			self.imageView.stopAnimating()
 		}
 	}
 	
@@ -157,5 +156,172 @@ extension FactsView {
 			self.dataSource.facts = facts
 			self.tableView.reloadData()
 		}
+	}
+    
+	private func resetTextFieldUI() {
+		setTextFieldBackground(to: .white)
+		setTextFieldInteration(to: true)
+	}
+	
+	private func resetTextFieldToOriginalState() {
+		resetTextFieldUI()
+		cleanTextField()
+		setTextFieldAlpha(to: 1)
+	}
+	
+	private func openKeyboard() {
+		DispatchQueue.main.async {
+			self.textField.becomeFirstResponder()
+		}
+	}
+	
+	private func cleanTextField() {
+		textField.text = ""
+	}
+}
+
+// MARK: - Empty Result -
+
+extension FactsView {
+	
+	private var isEmptyResultShowing: Bool {
+		return emptyResult != nil
+	}
+	
+	private func showEmptyResultView() {
+		prepareToShowPartialView()
+		showEmptyResult()
+	}
+	
+	private func prepareToShowPartialView() {
+		loadingView.hideLoading()
+		openKeyboard()
+		cleanTextField()
+		resetTextFieldUI()
+	}
+	
+	private func prepareToShowEmptyResult() {
+		let emptyResult = FactEmptyResultView.makeXib()
+		emptyResult.setup(for: self)
+		self.emptyResult = emptyResult
+	}
+	
+	private func showEmptyResult() {
+		prepareToShowEmptyResult()
+		emptyResult?.showAnimated()
+	}
+	
+	private func hideEmptyResult(and handle: @escaping () -> Void) {
+		guard isEmptyResultShowing else { return }
+		emptyResult?.removeAnimated { [weak self] in
+			self?.emptyResult = nil
+			handle()
+		}
+	}
+	
+	private func showLoadingHidingPartialView(_ color: UIColor) {
+		switch partialViewShowing {
+		case .emptyResult:
+			hideEmptyResult { [weak self] in
+				self?.showLoading(with: color)
+			}
+		case .invalidTerm:
+			hideInvalidTerm { [weak self] in
+				self?.showLoading(with: color)
+			}
+		case .none:
+			showLoading(with: color)
+		}
+	}
+}
+
+// MARK: - Error Methods -
+
+extension FactsView {
+	
+	private var isInvalidTermShowing: Bool {
+		return invalidTerm != nil
+	}
+	
+	private func showInternalError() {
+		prepareInternalErrorView()
+		prepareToShowFullScreenError()
+		internalError?.showAnimated()
+	}
+	
+	private func showConnectionError() {
+		prepareConnectionErrorView()
+		prepareToShowFullScreenError()
+		connectionError?.showAnimated()
+	}
+	
+	private func showInvalidTermError() {
+		prepareInvalidTermView()
+		prepareToShowPartialView()
+		invalidTerm?.showAnimated()
+	}
+	
+	private func prepareToShowFullScreenError() {
+		loadingView.hideLoading()
+		setTextFieldAlpha(to: 0)
+		resetTextFieldUI()
+	}
+	
+	private func prepareInternalErrorView() {
+		let errorView = InternalErrorView.makeXib()
+		errorView.setup(for: self)
+		internalError = errorView
+	}
+	
+	private func prepareInvalidTermView() {
+		let invalidTerm = FactInvalidTermView.makeXib()
+		invalidTerm.setup(for: self)
+		invalidTerm.showAnimated()
+		self.invalidTerm = invalidTerm
+	}
+	
+	private func prepareConnectionErrorView() {
+		let errorView = ConnectionErrorView.makeXib()
+		errorView.setup(for: self)
+		connectionError = errorView
+		errorView.didTapTryAgain = { [weak self] in
+			self?.loadingView.hideLoading()
+			self?.resetTextFieldToOriginalState()
+			self?.hideConnectionError()
+			self?.openKeyboard()
+		}
+	}
+	
+	private func hideConnectionError() {
+		guard connectionError != nil else { return }
+		connectionError?.removeAnimated { [weak self] in
+			self?.connectionError = nil
+		}
+	}
+	
+	private func hideInvalidTerm(and handle: @escaping () -> Void) {
+		guard isInvalidTermShowing else { return }
+		invalidTerm?.removeAnimated { [weak self] in
+			self?.invalidTerm = nil
+			handle()
+		}
+	}
+	
+	private var partialViewShowing: PartialViewShowing {
+		if invalidTerm != nil {
+			return .invalidTerm
+		}
+		else if emptyResult != nil {
+			return .emptyResult
+		}
+		else {
+			return .none
+		}
+	}
+	
+	private enum PartialViewShowing {
+		case invalidTerm
+		case emptyResult
+		case none
 	}
 }

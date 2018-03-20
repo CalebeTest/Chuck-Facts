@@ -6,20 +6,19 @@
 //  Copyright © 2018 Stone Pagamentos. All rights reserved.
 //
 
+import Foundation
 import RxSwift
 import RxTest
 
-public func onNext<T>(expect element: T) -> RxTest.Recorded<RxSwift.Event<T>> {
+func onNext<T>(expect element: T) -> RxTest.Recorded<RxSwift.Event<T>> {
 	return next(0, element)
 }
 
-public func completed<T>(_ type: T.Type = T.self) -> RxTest.Recorded<RxSwift.Event<T>> {
+func completed<T>(_ type: T.Type = T.self) -> RxTest.Recorded<RxSwift.Event<T>> {
 	return completed(0)
 }
 
-func ==<T>(lhs: [RxTest.Recorded<RxSwift.Event<T>>],
-			  rhs: [RxTest.Recorded<RxSwift.Event<T>>])
-	-> Bool where T : Equatable {
+func ==<T>(lhs: [RxTest.Recorded<RxSwift.Event<T>>], rhs: [RxTest.Recorded<RxSwift.Event<T>>]) -> Bool where T : Equatable {
 		
 		var isEqual = true
 		
