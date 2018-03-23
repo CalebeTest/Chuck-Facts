@@ -2,3 +2,5 @@ github "ReactiveX/RxSwift" ~> 4.0
 github "RxSwiftCommunity/RxAlamofire" "master"
 github "Quick/Quick"
 github "Quick/Nimble"
+github "envoy/Embassy" ~> 4.0
+github "envoy/Ambassador" ~> 4.0
