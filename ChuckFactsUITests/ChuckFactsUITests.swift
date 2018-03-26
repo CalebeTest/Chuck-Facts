@@ -12,21 +12,14 @@ import Swifter
 
 final class ChuckFactsUITests: XCTestCase {
 	
-	private let dynamicStubs = HTTPDynamicStubs()
+	private let stubber = HTTPStubber()
 	
 	private var app: XCUIApplication!
 	private var screen: FactScreen!
 	
-	private func setScreenState(to state: String) {
-		app.launchEnvironment.updateValue(state, forKey: "screen_mock_state")
-	}
-	
-	private func searchSomeFactAndWaitFor(_ state: String) {
-		setScreenState(to: state)
-		
-		app.launch()
-		
-		screen.textField.typeText("Some Fact...")
+	private func searchSomeFactAndWait(for result: FactScreenStateMock) {
+		let text = stubber.setStub(for: result)
+		screen.textField.typeText(text)
 		screen.searchButton.tap()
 	}
 	
@@ -36,10 +29,8 @@ final class ChuckFactsUITests: XCTestCase {
 		continueAfterFailure = false
 		
 		app = XCUIApplication()
-		
 		screen = FactScreen(app: app)
-		
-		dynamicStubs.setUp()
+		stubber.setUp()
 		
 		app.launchArguments.append("--uitesting")
 		app.launch()
@@ -48,75 +39,49 @@ final class ChuckFactsUITests: XCTestCase {
 	override func tearDown() {
 		screen = nil
 		app = nil
-		dynamicStubs.tearDown()
+		stubber.tearDown()
 		
 		super.tearDown()
 	}
 	
-//	func test_TextField_Should_BeEnabled_When_AppStarts() {
-//
-//		setScreenState(to: "success")
-//
-//		app.launch()
-//
-//		expect(self.screen.textField.isEnabled).to(beTrue())
-//	}
-//
-//	func test_SearchSomeFactWith_Success_AndShouldShow_AListWithTwoFacts() {
-//
-//		searchSomeFactAndWaitFor("success")
-//
-//		expect(self.screen.tableView.cells.count).toEventually(equal(2), timeout: 1)
-//	}
-//
-//	func test_SearchSomeFactWith_SuccessWithEmptyResult_AndShow_EmptyResultView() {
-//
-//		searchSomeFactAndWaitFor("successWithEmptyResult")
-//
-//		expect(self.screen.emptyResult.exists).toEventually(beTrue(), timeout: 1)
-//	}
-//
-//	func test_SearchSomeFactWith_NoResultsForTerm_AndShow_NoResultsForTermView() {
-//
-//		searchSomeFactAndWaitFor("noResultsForTerm")
-//
-//		expect(self.screen.emptyResult.exists).toEventually(beTrue(), timeout: 1)
-//	}
-//
-//	func test_SearchSomeFactWith_InvalidTerm_AndShow_InvalidTermView() {
-//
-//		searchSomeFactAndWaitFor("invalidTerm")
-//
-//		expect(self.screen.invalidTerm.exists).toEventually(beTrue(), timeout: 1)
-//	}
-//
-//	func test_SearchSomeFactWith_NoConnection_AndShow_NoConnectionView() {
-//
-//		searchSomeFactAndWaitFor("noConnection")
-//
-//		expect(self.screen.noConnection.exists).toEventually(beTrue(), timeout: 2)
-//	}
-//
-//	func test_SearchSomeFactWith_InternalError_AndShow_InternalErrorView() {
-//
-//		searchSomeFactAndWaitFor("internal")
-//
-//		expect(self.screen.internalError.exists).toEventually(beTrue(), timeout: 1)
-//	}
-	
-	
-	
-	
-	
-	
-	func test_asd() {
+	func test_TextField_Should_BeEnabled_When_AppStarts() {
 		
-		dynamicStubs.setupStub(url: "/test", filename: "Test")
+		expect(self.screen.textField.isEnabled).to(beTrue())
+	}
+	
+	func test_SearchSomeFactWith_Success_AndShouldShow_AListWithTwoFacts() {
 		
-		screen.textField.typeText("/test")
-		screen.searchButton.tap()
+		searchSomeFactAndWait(for: .success)
 		
-		expect(self.screen.tableView.cells.count).toEventually(equal(2), timeout: 2)
+		expect(self.screen.tableView.cells.count).toEventually(equal(2), timeout: 1)
+	}
+	
+	func test_SearchSomeFactWith_SuccessWithEmptyResult_AndShow_EmptyResultView() {
+		
+		searchSomeFactAndWait(for: .successWithEmptyResult)
+		
+		expect(self.screen.emptyResult.exists).toEventually(beTrue(), timeout: 1)
+	}
+	
+	func test_SearchSomeFactWith_NoResultsForTerm_AndShow_NoResultsForTermView() {
+		
+		searchSomeFactAndWait(for: .noResultsForTerm)
+		
+		expect(self.screen.emptyResult.exists).toEventually(beTrue(), timeout: 1)
+	}
+	
+	func test_SearchSomeFactWith_InvalidTerm_AndShow_InvalidTermView() {
+		
+		searchSomeFactAndWait(for: .invalidTerm)
+		
+		expect(self.screen.invalidTerm.exists).toEventually(beTrue(), timeout: 1)
+	}
+	
+	func test_SearchSomeFactWith_InternalError_AndShow_InternalErrorView() {
+		
+		searchSomeFactAndWait(for: .unknown)
+		
+		expect(self.screen.internalError.exists).toEventually(beTrue(), timeout: 1)
 	}
 }
 
@@ -143,72 +108,3 @@ extension ChuckFactsUITests {
 		}
 	}
 }
-
-enum HTTPMethod {
-	case GET
-}
-
-class HTTPDynamicStubs {
-	
-	var server = HttpServer()
-	
-	func setUp() {
-		setupInitialStubs()
-		try! server.start()
-	}
-	
-	func tearDown() {
-		server.stop()
-	}
-	
-	func setupInitialStubs() {
-		// Setting up all the initial mocks from the array
-		for stub in initialStubs {
-			setupStub(url: stub.url, filename: stub.jsonFilename, method: stub.method)
-		}
-	}
-	
-	public func setupStub(url: String, filename: String, method: HTTPMethod = .GET) {
-		let testBundle = Bundle(for: type(of: self))
-		let filePath = testBundle.path(forResource: filename, ofType: "json")
-		let fileUrl = URL(fileURLWithPath: filePath!)
-		let data = try! Data(contentsOf: fileUrl, options: .uncached)
-		// Looking for a file and converting it to JSON
-//		let json = dataToJSON(data: data)
-		
-		// Swifter makes it very easy to create stubbed responses
-		let response: ((HttpRequest) -> HttpResponse) = { _ in
-			return HttpResponse.raw(200, "IDK", [:], { writer in
-				return try writer.write(data)
-			})
-//			return HttpResponse.ok(HttpResponseBody.custom(data, { rawData -> String in
-//				fatalError("IDK")
-//			}))
-//			return HttpResponse.ok(.json(data as AnyObject))
-		}
-		
-		switch method  {
-		case .GET:
-			server.GET[url] = response
-		}
-	}
-	
-//	func dataToJSON(data: Data) -> Any? {
-//		do {
-//			return try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
-//		} catch let myJSONError {
-//			print(myJSONError)
-//		}
-//		return nil
-//	}
-}
-
-struct HTTPStubInfo {
-	let url: String
-	let jsonFilename: String
-	let method: HTTPMethod
-}
-
-let initialStubs = [
-	HTTPStubInfo(url: "http://localhost:8080/test", jsonFilename: "Test", method: .GET),
-]
