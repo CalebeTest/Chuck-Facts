@@ -20,7 +20,7 @@ final class ChuckLoading {
 		loadingView.translatesAutoresizingMaskIntoConstraints = false
 		DispatchQueue.main.async {
 			view.addSubview(self.loadingView)
-			self.loadingView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+			self.loadingView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40).isActive = true
 			self.loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
 			self.loadingView.widthAnchor.constraint(equalToConstant: size).isActive = true
 			self.loadingView.heightAnchor.constraint(equalToConstant: size).isActive = true
