@@ -18,13 +18,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 		let service: FactServiceProtocol
 
 		if UITesting().verifyRunningInTestMode(for: CommandLine.arguments) {
-
-//			let mockState = ScreenMockState()
-//			let processInfo = ProcessInfo.processInfo
-//
-//			let state = mockState.getState(from: processInfo.environment)
-//			service = FactServiceMock(desired: state)
-			
 			service = FactService(url: "http://localhost:8080")
 		}
 		else {

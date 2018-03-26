@@ -6,6 +6,7 @@
 //  Copyright © 2018 Stone Pagamentos. All rights reserved.
 //
 
+@testable import ChuckFacts
 import Foundation
 import RxSwift
 
