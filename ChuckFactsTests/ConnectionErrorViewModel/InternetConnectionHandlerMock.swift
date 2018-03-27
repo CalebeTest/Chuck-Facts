@@ -6,16 +6,17 @@
 //  Copyright © 2018 Stone Pagamentos. All rights reserved.
 //
 
+@testable import ChuckFacts
 import Foundation
 
 final class InternetConnectionHandlerMock: InternetConnectionHandable {
-	
+
 	func verify(_ error: Error) throws {
-		
+
 		guard let urlError = error as? URLError.Code else {
 			throw error
 		}
-		
+
 		if urlError == .notConnectedToInternet {
 			throw ServiceError.connection(.noConnection)
 		}

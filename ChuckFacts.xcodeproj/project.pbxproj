@@ -7,12 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3345A00E2060527500DDE15B /* ScreenMockState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3345A00D2060527500DDE15B /* ScreenMockState.swift */; };
+		3312BBCA20646A2B008FC2BD /* Success.json in Resources */ = {isa = PBXBuildFile; fileRef = 3312BBC920646A2B008FC2BD /* Success.json */; };
+		332E20AF20696C9100539065 /* SuccessWithEmptyResult.json in Resources */ = {isa = PBXBuildFile; fileRef = 332E20AE20696C9100539065 /* SuccessWithEmptyResult.json */; };
 		3345A0102060534D00DDE15B /* UITesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3345A00F2060534D00DDE15B /* UITesting.swift */; };
 		3345A013206054E100DDE15B /* UITestingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3345A012206054E100DDE15B /* UITestingTests.swift */; };
-		3345A015206055AA00DDE15B /* ScreenMockStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3345A014206055AA00DDE15B /* ScreenMockStateTests.swift */; };
-		3345A01720605D4700DDE15B /* FactServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3345A01620605D4700DDE15B /* FactServiceMock.swift */; };
-		3345A01A20618FE300DDE15B /* InternetConnectionHandlerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3345A01920618FE300DDE15B /* InternetConnectionHandlerMock.swift */; };
 		3371BF6E205C444500DAA9F2 /* ChuckLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3371BF6D205C444500DAA9F2 /* ChuckLoading.swift */; };
 		3371BF70205C56F600DAA9F2 /* ChuckLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3371BF6F205C56F600DAA9F2 /* ChuckLoadingView.swift */; };
 		3371BF73205C72CD00DAA9F2 /* ChuckLoadingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3371BF72205C72CD00DAA9F2 /* ChuckLoadingTests.swift */; };
@@ -20,6 +18,12 @@
 		338155DC2062ABE3007105FA /* SettingsOpenable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338155DB2062ABE3007105FA /* SettingsOpenable.swift */; };
 		338155DE2062AC16007105FA /* SettingsOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338155DD2062AC16007105FA /* SettingsOpener.swift */; };
 		338155E12062AD1A007105FA /* SettingsOpenerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338155E02062AD1A007105FA /* SettingsOpenerMock.swift */; };
+		33AC44DA2069977900381026 /* FactServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3345A01620605D4700DDE15B /* FactServiceMock.swift */; };
+		33AC44DB206997B400381026 /* InternetConnectionHandlerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3345A01920618FE300DDE15B /* InternetConnectionHandlerMock.swift */; };
+		33AD17E420695770007FCADE /* HTTPStubber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AD17E320695770007FCADE /* HTTPStubber.swift */; };
+		33AD17E620695C93007FCADE /* FactScreenStateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AD17E520695C93007FCADE /* FactScreenStateMock.swift */; };
+		33B9CF0A206586E90018B17F /* Swifter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33B9CF09206586E90018B17F /* Swifter.framework */; };
+		33B9CF0B206586F00018B17F /* Swifter.framework in Carthage Copy Files */ = {isa = PBXBuildFile; fileRef = 33B9CF09206586E90018B17F /* Swifter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		33E9959F205843EC0037ECA9 /* FactEmptyResultView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33E9959E205843EC0037ECA9 /* FactEmptyResultView.xib */; };
 		33E995A1205843F80037ECA9 /* FactEmptyResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E995A0205843F80037ECA9 /* FactEmptyResultView.swift */; };
 		33E995A5205868C70037ECA9 /* TestsExtented.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E995A4205868C70037ECA9 /* TestsExtented.swift */; };
@@ -119,6 +123,7 @@
 			files = (
 				33E995C5205AFB5F0037ECA9 /* Nimble.framework in Carthage Copy Files */,
 				33E995C6205AFB5F0037ECA9 /* Quick.framework in Carthage Copy Files */,
+				33B9CF0B206586F00018B17F /* Swifter.framework in Carthage Copy Files */,
 			);
 			name = "Carthage Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,10 +145,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3345A00D2060527500DDE15B /* ScreenMockState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenMockState.swift; sourceTree = "<group>"; };
+		3312BBC920646A2B008FC2BD /* Success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Success.json; sourceTree = "<group>"; };
+		332E20AE20696C9100539065 /* SuccessWithEmptyResult.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SuccessWithEmptyResult.json; sourceTree = "<group>"; };
 		3345A00F2060534D00DDE15B /* UITesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITesting.swift; sourceTree = "<group>"; };
 		3345A012206054E100DDE15B /* UITestingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestingTests.swift; sourceTree = "<group>"; };
-		3345A014206055AA00DDE15B /* ScreenMockStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenMockStateTests.swift; sourceTree = "<group>"; };
 		3345A01620605D4700DDE15B /* FactServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactServiceMock.swift; sourceTree = "<group>"; };
 		3345A01920618FE300DDE15B /* InternetConnectionHandlerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionHandlerMock.swift; sourceTree = "<group>"; };
 		3371BF6D205C444500DAA9F2 /* ChuckLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChuckLoading.swift; sourceTree = "<group>"; };
@@ -153,6 +158,9 @@
 		338155DB2062ABE3007105FA /* SettingsOpenable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOpenable.swift; sourceTree = "<group>"; };
 		338155DD2062AC16007105FA /* SettingsOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOpener.swift; sourceTree = "<group>"; };
 		338155E02062AD1A007105FA /* SettingsOpenerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOpenerMock.swift; sourceTree = "<group>"; };
+		33AD17E320695770007FCADE /* HTTPStubber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPStubber.swift; sourceTree = "<group>"; };
+		33AD17E520695C93007FCADE /* FactScreenStateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactScreenStateMock.swift; sourceTree = "<group>"; };
+		33B9CF09206586E90018B17F /* Swifter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Swifter.framework; path = Carthage/Build/iOS/Swifter.framework; sourceTree = "<group>"; };
 		33E9959E205843EC0037ECA9 /* FactEmptyResultView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FactEmptyResultView.xib; sourceTree = "<group>"; };
 		33E995A0205843F80037ECA9 /* FactEmptyResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactEmptyResultView.swift; sourceTree = "<group>"; };
 		33E995A4205868C70037ECA9 /* TestsExtented.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsExtented.swift; sourceTree = "<group>"; };
@@ -231,6 +239,7 @@
 			files = (
 				33E995C2205AF9BA0037ECA9 /* Nimble.framework in Frameworks */,
 				33E995C3205AF9BA0037ECA9 /* Quick.framework in Frameworks */,
+				33B9CF0A206586E90018B17F /* Swifter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,22 +268,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3345A00C2060525500DDE15B /* UITestingMock */ = {
+		332E20AB20696C3800539065 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				3345A01920618FE300DDE15B /* InternetConnectionHandlerMock.swift */,
-				3345A00D2060527500DDE15B /* ScreenMockState.swift */,
-				3345A00F2060534D00DDE15B /* UITesting.swift */,
-				3345A01620605D4700DDE15B /* FactServiceMock.swift */,
+				3312BBC920646A2B008FC2BD /* Success.json */,
+				332E20AE20696C9100539065 /* SuccessWithEmptyResult.json */,
 			);
-			path = UITestingMock;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		3345A00C2060525500DDE15B /* UITesting */ = {
+			isa = PBXGroup;
+			children = (
+				3345A00F2060534D00DDE15B /* UITesting.swift */,
+			);
+			path = UITesting;
 			sourceTree = "<group>";
 		};
 		3345A011206054CF00DDE15B /* MockState */ = {
 			isa = PBXGroup;
 			children = (
+				3345A01620605D4700DDE15B /* FactServiceMock.swift */,
 				3345A012206054E100DDE15B /* UITestingTests.swift */,
-				3345A014206055AA00DDE15B /* ScreenMockStateTests.swift */,
 			);
 			path = MockState;
 			sourceTree = "<group>";
@@ -296,6 +311,15 @@
 			path = Loading;
 			sourceTree = "<group>";
 		};
+		337861BD20657313003C25CE /* LocalServer */ = {
+			isa = PBXGroup;
+			children = (
+				33AD17E520695C93007FCADE /* FactScreenStateMock.swift */,
+				33AD17E320695770007FCADE /* HTTPStubber.swift */,
+			);
+			path = LocalServer;
+			sourceTree = "<group>";
+		};
 		338155DA2062ABBF007105FA /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -308,6 +332,7 @@
 		338155DF2062ACFF007105FA /* ConnectionErrorViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				3345A01920618FE300DDE15B /* InternetConnectionHandlerMock.swift */,
 				338155E02062AD1A007105FA /* SettingsOpenerMock.swift */,
 				338155D82062A9FE007105FA /* ConnectionErrorViewModelTests.swift */,
 			);
@@ -345,6 +370,8 @@
 		33E995B9205AF3BA0037ECA9 /* ChuckFactsUITests */ = {
 			isa = PBXGroup;
 			children = (
+				337861BD20657313003C25CE /* LocalServer */,
+				332E20AB20696C3800539065 /* Resources */,
 				33E995BA205AF3BA0037ECA9 /* ChuckFactsUITests.swift */,
 				33E995BC205AF3BA0037ECA9 /* Info.plist */,
 			);
@@ -573,7 +600,7 @@
 				34298ACF204DD9CB0003C863 /* Libraries */,
 				346FB515204891E5006F962F /* Resources */,
 				346FB514204891BC006F962F /* Supporting Files */,
-				3345A00C2060525500DDE15B /* UITestingMock */,
+				3345A00C2060525500DDE15B /* UITesting */,
 			);
 			path = ChuckFacts;
 			sourceTree = "<group>";
@@ -623,6 +650,7 @@
 		34AD0ED22049D2C300B97FF7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				33B9CF09206586E90018B17F /* Swifter.framework */,
 				34B54AC72051B07000ACC3AE /* RxTest.framework */,
 				34529976204DEF9300358BB2 /* Nimble.framework */,
 				34529977204DEF9300358BB2 /* Quick.framework */,
@@ -765,6 +793,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				332E20AF20696C9100539065 /* SuccessWithEmptyResult.json in Resources */,
+				3312BBCA20646A2B008FC2BD /* Success.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -822,6 +852,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33AD17E620695C93007FCADE /* FactScreenStateMock.swift in Sources */,
+				33AD17E420695770007FCADE /* HTTPStubber.swift in Sources */,
 				33E995BB205AF3BA0037ECA9 /* ChuckFactsUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -831,14 +863,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				3371BF73205C72CD00DAA9F2 /* ChuckLoadingTests.swift in Sources */,
-				3345A015206055AA00DDE15B /* ScreenMockStateTests.swift in Sources */,
 				34B54AC320518D2400ACC3AE /* FactViewModelTests.swift in Sources */,
 				34529984204EE61700358BB2 /* FactMapperTests.swift in Sources */,
 				341A0A60204EFC1A00F9E701 /* FactCategoryTests.swift in Sources */,
+				33AC44DB206997B400381026 /* InternetConnectionHandlerMock.swift in Sources */,
 				3345A013206054E100DDE15B /* UITestingTests.swift in Sources */,
 				33E995A5205868C70037ECA9 /* TestsExtented.swift in Sources */,
 				341A0A62204EFCFD00F9E701 /* FactModelTests.swift in Sources */,
 				34529981204ED36B00358BB2 /* InfraStructureHandlerTests.swift in Sources */,
+				33AC44DA2069977900381026 /* FactServiceMock.swift in Sources */,
 				341A0A5E204EFA0500F9E701 /* FactTests.swift in Sources */,
 				341A0A6E204F0D6C00F9E701 /* FactURLMakerTests.swift in Sources */,
 				338155D92062A9FE007105FA /* ConnectionErrorViewModelTests.swift in Sources */,
@@ -872,7 +905,6 @@
 				338155DE2062AC16007105FA /* SettingsOpener.swift in Sources */,
 				34298ACC204DD84B0003C863 /* FactsView.swift in Sources */,
 				34AD0EE12049DA8900B97FF7 /* FactService.swift in Sources */,
-				3345A01A20618FE300DDE15B /* InternetConnectionHandlerMock.swift in Sources */,
 				3419BCF3205737F6003AEAED /* ConnectionErrorViewModel.swift in Sources */,
 				34298AC2204D91B60003C863 /* FactScreenState.swift in Sources */,
 				3371BF6E205C444500DAA9F2 /* ChuckLoading.swift in Sources */,
@@ -881,13 +913,11 @@
 				3419BCF1205731A7003AEAED /* ConnectionErrorView.swift in Sources */,
 				34298ACA204DC5A10003C863 /* FactsController.swift in Sources */,
 				34298AC0204D907A0003C863 /* FactViewModel.swift in Sources */,
-				3345A00E2060527500DDE15B /* ScreenMockState.swift in Sources */,
 				3419BCEB205722A4003AEAED /* InternalErrorView.swift in Sources */,
 				33E995B1205AE7E00037ECA9 /* InternetConnectionHandable.swift in Sources */,
 				34901BDB2049FA0100C29ADD /* InternetConnectionError.swift in Sources */,
 				338155DC2062ABE3007105FA /* SettingsOpenable.swift in Sources */,
 				33E995A8205875220037ECA9 /* FactInvalidTermView.swift in Sources */,
-				3345A01720605D4700DDE15B /* FactServiceMock.swift in Sources */,
 				33E995A1205843F80037ECA9 /* FactEmptyResultView.swift in Sources */,
 				34298AE4204DDB8D0003C863 /* FactsDelegate.swift in Sources */,
 				34298ADE204DDA330003C863 /* ViewCreatable.swift in Sources */,

@@ -1,0 +1,18 @@
+{
+	"total": 2,
+	"result": [
+		{
+			"icon_url": "https://assets.chucknorris.host/img/avatar/chuck-norris.png",
+			"id": "tng5xzi5t9syvqaubukycw",
+			"url": "https://api.chucknorris.io/jokes/tng5xzi5t9syvqaubukycw",
+			"value": "Chuck Norris always knows the EXACT location of Carmen SanDiego."
+		},
+		{
+			"category": ["Car"],
+			"icon_url": "https://assets.chucknorris.host/img/avatar/chuck-norris.png",
+			"id": "DuhjnnJCQmKAeMECnYTJuA",
+			"url": "https://api.chucknorris.io/jokes/DuhjnnJCQmKAeMECnYTJuA",
+			"value": "Jack in the Box's do not work around Chuck Norris. They know better than to attempt to scare Chuck Norris"
+		}
+	]
+}

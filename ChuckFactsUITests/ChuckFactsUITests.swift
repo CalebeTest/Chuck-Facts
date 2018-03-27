@@ -6,24 +6,20 @@
 //  Copyright © 2018 Stone Pagamentos. All rights reserved.
 //
 
-import Nimble
 import XCTest
+import Nimble
+import Swifter
 
 final class ChuckFactsUITests: XCTestCase {
+	
+	private let stubber = HTTPStubber()
 	
 	private var app: XCUIApplication!
 	private var screen: FactScreen!
 	
-	private func setScreenState(to state: String) {
-		app.launchEnvironment.updateValue(state, forKey: "screen_mock_state")
-	}
-	
-	private func searchSomeFactAndWaitFor(_ state: String) {
-		setScreenState(to: state)
-		
-		app.launch()
-		
-		screen.textField.typeText("Some Fact...")
+	private func searchSomeFactAndWait(for result: FactScreenStateMock) {
+		let text = stubber.setStub(for: result)
+		screen.textField.typeText(text)
 		screen.searchButton.tap()
 	}
 	
@@ -33,66 +29,57 @@ final class ChuckFactsUITests: XCTestCase {
 		continueAfterFailure = false
 		
 		app = XCUIApplication()
+		screen = FactScreen(app: app)
+		stubber.setUp()
 		
 		app.launchArguments.append("--uitesting")
-		
-		screen = FactScreen(app: app)
+		app.launch()
 	}
 	
 	override func tearDown() {
 		screen = nil
 		app = nil
+		stubber.tearDown()
 		
 		super.tearDown()
 	}
 	
 	func test_TextField_Should_BeEnabled_When_AppStarts() {
 		
-		setScreenState(to: "success")
-		
-		app.launch()
-		
 		expect(self.screen.textField.isEnabled).to(beTrue())
 	}
 	
 	func test_SearchSomeFactWith_Success_AndShouldShow_AListWithTwoFacts() {
 		
-		searchSomeFactAndWaitFor("success")
+		searchSomeFactAndWait(for: .success)
 		
 		expect(self.screen.tableView.cells.count).toEventually(equal(2), timeout: 1)
 	}
 	
 	func test_SearchSomeFactWith_SuccessWithEmptyResult_AndShow_EmptyResultView() {
-
-		searchSomeFactAndWaitFor("successWithEmptyResult")
-
+		
+		searchSomeFactAndWait(for: .successWithEmptyResult)
+		
 		expect(self.screen.emptyResult.exists).toEventually(beTrue(), timeout: 1)
 	}
 	
 	func test_SearchSomeFactWith_NoResultsForTerm_AndShow_NoResultsForTermView() {
 		
-		searchSomeFactAndWaitFor("noResultsForTerm")
+		searchSomeFactAndWait(for: .noResultsForTerm)
 		
 		expect(self.screen.emptyResult.exists).toEventually(beTrue(), timeout: 1)
 	}
 	
 	func test_SearchSomeFactWith_InvalidTerm_AndShow_InvalidTermView() {
 		
-		searchSomeFactAndWaitFor("invalidTerm")
+		searchSomeFactAndWait(for: .invalidTerm)
 		
 		expect(self.screen.invalidTerm.exists).toEventually(beTrue(), timeout: 1)
 	}
 	
-	func test_SearchSomeFactWith_NoConnection_AndShow_NoConnectionView() {
-		
-		searchSomeFactAndWaitFor("noConnection")
-		
-		expect(self.screen.noConnection.exists).toEventually(beTrue(), timeout: 2)
-	}
-	
 	func test_SearchSomeFactWith_InternalError_AndShow_InternalErrorView() {
 		
-		searchSomeFactAndWaitFor("internal")
+		searchSomeFactAndWait(for: .unknown)
 		
 		expect(self.screen.internalError.exists).toEventually(beTrue(), timeout: 1)
 	}
